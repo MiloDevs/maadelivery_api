@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Henry",
+      "lastName": "Odhiambo",
+      "email": "siliconvalleny91@grmail.com",
+      "phoneNumber": "0712345678"
+    },
+    {
+      "id": 2,
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "JohnDoe@gmail.com",
+      "phoneNumber": "0712345678"
+    }
+  ]
+}
