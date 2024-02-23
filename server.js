@@ -18,10 +18,23 @@ const client = require("twilio")(accountSid, authToken);
 
 
 // Routes
-app.get('/', (req, res) => {
-    fetch('https://localhost:3004/users')
+app.post('/user', (req, res) => {
+    const { phoneNumber } = req.body;
+    fetch("http://localhost:3004/users?phoneNumber=" + phoneNumber)
     .then(response => response.json())
-    .then(data => res.send(data));
+    .then(data => {
+        if(data.length > 0) {
+            res.send({
+                message: "User Found",
+                status: 1
+            });
+        }else{
+            res.send({
+                message: "User Not Found",
+                status: 0
+            });
+        }
+    });
 });
 
 app.get('/api/send-otp', (req, res) => {
