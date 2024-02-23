@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"nodemon server.js\" \"json-server --watch db.json --port 3004\""
+    "start": "concurrently \"nodemon server.js\" \"json-server db.json\""
   },
   "keywords": [],
   "author": "",
