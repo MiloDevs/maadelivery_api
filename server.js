@@ -19,7 +19,9 @@ const client = require("twilio")(accountSid, authToken);
 
 // Routes
 app.get('/', (req, res) => {
-    res.send("Hello World!");
+    fetch('https://localhost:3004/users')
+    .then(response => response.json())
+    .then(data => res.send(data));
 });
 
 app.get('/api/send-otp', (req, res) => {
