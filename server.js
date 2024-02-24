@@ -20,21 +20,24 @@ const client = require("twilio")(accountSid, authToken);
 // Routes
 app.post('/user', (req, res) => {
     const { phoneNumber } = req.body;
-    fetch("http://localhost:3004/users?phoneNumber=" + phoneNumber)
-    .then(response => response.json())
-    .then(data => {
-        if(data.length > 0) {
-            res.send({
-                message: "User Found",
-                status: 1
-            });
-        }else{
-            res.send({
-                message: "User Not Found",
-                status: 0
-            });
+    fetch(
+      "https://my-json-server.typicode.com/milodevs/maadelivery_api/users" +
+        phoneNumber
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.length > 0) {
+          res.send({
+            message: "User Found",
+            status: 1,
+          });
+        } else {
+          res.send({
+            message: "User Not Found",
+            status: 0,
+          });
         }
-    });
+      });
 });
 
 app.get('/api/send-otp', (req, res) => {
