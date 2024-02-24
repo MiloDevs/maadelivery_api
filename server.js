@@ -21,7 +21,7 @@ const client = require("twilio")(accountSid, authToken);
 app.post('/user', (req, res) => {
     const { phoneNumber } = req.body;
     fetch(
-      "https://my-json-server.typicode.com/milodevs/maadelivery_api/users" +
+      "https://my-json-server.typicode.com/milodevs/maadelivery_api/users?phoneNumber=" +
         phoneNumber
     )
       .then((response) => response.json())
