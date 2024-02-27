@@ -5,7 +5,8 @@
       "firstName": "Henry",
       "lastName": "Odhiambo",
       "email": "siliconvalleny91@gmail.com",
-      "phoneNumber": "0793616321"
+      "phoneNumber": "0793616321",
+      "verified": "false"
     },
     {
       "id": 2,
