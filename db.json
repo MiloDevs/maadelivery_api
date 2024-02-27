@@ -1,19 +1,15 @@
 {
-  "users": [
-    {
-      "id": 1,
-      "firstName": "Henry",
-      "lastName": "Odhiambo",
-      "email": "siliconvalleny91@gmail.com",
-      "phoneNumber": "0793616321",
-      "verified": "false"
-    },
-    {
-      "id": 2,
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "JohnDoe@gmail.com",
-      "phoneNumber": "0712345678"
-    }
-  ]
+    "users":[
+        {
+            "id": 1,
+            "firstName": "Henry",
+            "lastName": "Cavill",
+            "email": "hcavill@gmail.com",
+            "phoneNumber": "0712345678",
+            "verified": false,
+            "otp": "1234",
+            "otpExpiry": "2019-01-01T00:00:00Z",
+            "lastLogin": "2019-01-01T00:00:00Z"
+        }
+    ]
 }
