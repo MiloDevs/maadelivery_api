@@ -4,6 +4,7 @@ const connectDB = require("./connect.js");
 const User = require("./userModels.js");
 const app = express();
 const port = process.env.PORT || 5000;
+const crypto = require("crypto");
 app.use(cors());
 app.use(express.json());
 
@@ -73,6 +74,53 @@ function generateOTP() {
   // For simplicity, generating a 4-digit OTP here
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
+
+app.post("api/create-account", async (req, res) => {
+  const phoneNumber = req.body.phoneNumber;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const email = req.body.email;
+
+  try {
+    const user = await User.findOne({ phoneNumber });
+
+    if (user) {
+      return res.json({
+        message: "User already exists",
+        status: 0,
+      });
+    }
+
+    const newUser = new User({
+      id: generateUserId(),
+      phoneNumber,
+      firstName,
+      lastName,
+      email,
+      verified: false,
+      lastLogin: new Date(),
+      createdAt: new Date(),
+    });
+
+    await newUser.save();
+
+    res.json({
+      message: "Account created",
+      status: 1,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Internal Server Error",
+      status: 0,
+    });
+  }
+});
+
+function generateUserId() {
+  return crypto.randomBytes(16).toString("hex");
+}
+
 
 app.post("/api/verify-otp", async (req, res) => {
   const phoneNumber = req.body.phoneNumber;
