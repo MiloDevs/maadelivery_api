@@ -75,7 +75,7 @@ function generateOTP() {
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
-app.post("api/create-account", async (req, res) => {
+app.post("/api/create-account", async (req, res) => {
   const phoneNumber = req.body.phoneNumber;
   const firstName = req.body.firstName;
   const lastName = req.body.lastName;
