@@ -5,6 +5,7 @@ const User = require("./userModels.js");
 const app = express();
 const port = process.env.PORT || 5000;
 const crypto = require("crypto");
+const axios = require("axios");
 app.use(cors());
 app.use(express.json());
 
@@ -37,7 +38,9 @@ app.post("/api/login", async (req, res) => {
           { phoneNumber },
           { otp, otpExpiry, otpStatus: "pending"}
         );
-
+        
+        // Send the OTP via SMS
+        await sendOTPSMS(phoneNumber, otp);
         
         res.json({
           message: "OTP sent. Redirecting to OTP page.",
@@ -70,8 +73,7 @@ app.post("/api/login", async (req, res) => {
 });
 
 function generateOTP() {
-  // Implement your OTP generation logic (e.g., using a library)
-  // For simplicity, generating a 4-digit OTP here
+  // Generate a 4-digit OTP
   return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
@@ -120,6 +122,37 @@ app.post("/api/create-account", async (req, res) => {
 function generateUserId() {
   return crypto.randomBytes(16).toString("hex");
 }
+
+async function sendOTPSMS(phoneNumber, otp) {
+  const url = "https://2vznj6.api.infobip.com/sms/2/text/advanced";
+
+  const headers = {
+    Authorization:
+      "App" + " " + process.env.INFOBIP_API_KEY,
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  };
+
+  const postData = {
+    messages: [
+      {
+        destinations: [{ to: phoneNumber }],
+        from: "ServiceSMS",
+        text: `Your OTP is: ${otp}. Have a nice day!`,
+      },
+    ],
+  };
+
+  try {
+    const response = await axios.post(url, postData, { headers });
+    console.log(`SMS sent to ${phoneNumber}: ${response.data}`);
+  } catch (error) {
+    console.error("Error:", error.message);
+    // You can handle the error as needed (e.g., retrying, logging, etc.)
+  }
+}
+
+
 
 
 app.post("/api/verify-otp", async (req, res) => {

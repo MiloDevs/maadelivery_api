@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
     lastName: { type: String, required: true }, // Last name
     email: { type: String, required: true }, // Email
     phoneNumber: { type: String, required: true }, // Phone number
-    deviceIds: [{ type: String }], // Array of device IDs
     lastLogin: { type: Date, required: true }, // Date of last login
     createdAt: { type: Date, required: true }, // Date of creation
     otpStatus: { type: String, enum: ['pending', 'approved', 'expired'] }, // pending, approved, expired
