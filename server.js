@@ -40,7 +40,7 @@ app.post("/api/login", async (req, res) => {
         );
 
         // Send the OTP via SMS
-        /* await sendOTPSMS(phoneNumber, otp); */
+        await sendOTPSMS(phoneNumber, otp); 
 
         res.json({
           message: "OTP sent. Redirecting to OTP page.",
@@ -128,20 +128,20 @@ async function sendOTPSMS(phoneNumber, otp) {
     const response = await axios.post(
       "https://2vznj6.api.infobip.com/sms/2/text/advanced",
       {
-        messages: [
-          {
-            from: "InfoSMS",
-            destinations: [{ to: phoneNumber }],
-            text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
-          },
-        ],
-      },
-      {
         headers: {
-          Authorization: "App" + " " + process.env.INFOBIP_API_KEY,
           "Content-Type": "application/json",
+          Authorization: "App " + process.env.INFOBIP_API_KEY,
           Accept: "application/json",
         },
+      },
+      {
+        messages: [
+          {
+            from: "ServiceSMS",
+            destinations: [{ to: phoneNumber }],
+            text: `Your OTP is ${otp}. It will expire in 5 minutes. MaaDelivery Team`,
+          },
+        ],
       }
     );
     console.log(`SMS sent to ${phoneNumber}: ${response.data}`);
