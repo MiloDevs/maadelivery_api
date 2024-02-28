@@ -135,7 +135,7 @@ async function sendOTPSMS(phoneNumber, otp) {
         {
           destinations: [{ to: phoneNumber }],
           from: "ServiceSMS",
-          text: "Hello,\n Your OTP is " + otp + ".\n It will expire in 5 minutes. MaaDelivery Team",
+          text: ` Hello,\n Your OTP is ${otp}. \n \n It will expire in 5 minutes. \n \n Do not share this OTP with anyone. \n \n Regards, \n MaaDelivery Team`,
         },
       ],
     });
