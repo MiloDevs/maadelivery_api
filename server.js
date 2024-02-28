@@ -125,25 +125,32 @@ function generateUserId() {
 
 async function sendOTPSMS(phoneNumber, otp) {
   try {
-    const response = await axios.post(
-      "https://2vznj6.api.infobip.com/sms/2/text/advanced",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "App " + process.env.INFOBIP_API_KEY,
-          Accept: "application/json",
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", "App " + process.env.INFOBIP_API_KEY);
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Accept", "application/json");
+
+    const raw = JSON.stringify({
+      messages: [
+        {
+          destinations: [{ to: phoneNumber }],
+          from: "ServiceSMS",
+          text: "Hello,\n Your OTP is " + otp + ".\n It will expire in 5 minutes. MaaDelivery Team",
         },
-      },
-      {
-        messages: [
-          {
-            from: "ServiceSMS",
-            destinations: [{ to: phoneNumber }],
-            text: `Your OTP is ${otp}. It will expire in 5 minutes. MaaDelivery Team`,
-          },
-        ],
-      }
-    );
+      ],
+    });
+
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("https://2vznj6.api.infobip.com/sms/2/text/advanced", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
     console.log(`SMS sent to ${phoneNumber}: ${response.data}`);
   } catch (error) {
     console.error("Error:", error.message);
