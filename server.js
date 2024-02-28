@@ -48,7 +48,7 @@ app.post("/api/login", async (req, res) => {
         res.json({
           message: "Redirecting to main page.",
           redirectTo: "/home",
-          status: 1,
+          status: 2,
         });
       }
     } else {
@@ -56,7 +56,7 @@ app.post("/api/login", async (req, res) => {
       res.json({
         message: "Redirecting to create account page.",
         redirectTo: "/create-account",
-        status: 1,
+        status: 3,
       });
     }
   } catch (err) {
