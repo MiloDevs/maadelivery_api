@@ -36,12 +36,12 @@ app.post("/api/login", async (req, res) => {
         // Store the OTP and updated deviceIds in the database
         await User.updateOne(
           { phoneNumber },
-          { otp, otpExpiry, otpStatus: "pending"}
+          { otp, otpExpiry, otpStatus: "pending" }
         );
-        
+
         // Send the OTP via SMS
-        await sendOTPSMS(phoneNumber, otp);
-        
+        /* await sendOTPSMS(phoneNumber, otp); */
+
         res.json({
           message: "OTP sent. Redirecting to OTP page.",
           redirectTo: "/otp-page",
@@ -124,26 +124,26 @@ function generateUserId() {
 }
 
 async function sendOTPSMS(phoneNumber, otp) {
-  const url = "https://2vznj6.api.infobip.com/sms/2/text/advanced";
-
-  const headers = {
-    "Authorization": "App " + process.env.INFOBIP_API_KEY,
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-  };
-
-  const postData = {
-    messages: [
-      {
-        destinations: [{ to: phoneNumber }],
-        from: "ServiceSMS",
-        text: `Your OTP is: ${otp}. Have a nice day!`,
-      },
-    ],
-  };
-
   try {
-    const response = await axios.post(url, postData, { headers });
+    const response = await axios.post(
+      "https://2vznj6.api.infobip.com/sms/2/text/advanced",
+      {
+        messages: [
+          {
+            from: "InfoSMS",
+            destinations: [{ to: phoneNumber }],
+            text: `Your OTP is ${otp}. It will expire in 5 minutes.`,
+          },
+        ],
+      },
+      {
+        headers: {
+          Authorization: "App" + " " + process.env.INFOBIP_API_KEY,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+      }
+    );
     console.log(`SMS sent to ${phoneNumber}: ${response.data}`);
   } catch (error) {
     console.error("Error:", error.message);
@@ -197,7 +197,7 @@ app.post("/api/verify-otp", async (req, res) => {
       });
     }
 
-    await User.updateOne({ phoneNumber }, { otpStatus: "approved" });
+    await User.updateOne({ phoneNumber }, { otpStatus: "approved", verified: true, lastLogin: new Date()});
 
     res.json({
       message: "OTP verified",
