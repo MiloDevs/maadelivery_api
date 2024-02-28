@@ -127,10 +127,9 @@ async function sendOTPSMS(phoneNumber, otp) {
   const url = "https://2vznj6.api.infobip.com/sms/2/text/advanced";
 
   const headers = {
-    Authorization:
-      "App" + " " + process.env.INFOBIP_API_KEY,
+    "Authorization": "App " + process.env.INFOBIP_API_KEY,
     "Content-Type": "application/json",
-    Accept: "application/json",
+    "Accept": "application/json",
   };
 
   const postData = {
